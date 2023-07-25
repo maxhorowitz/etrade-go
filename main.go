@@ -61,14 +61,14 @@ func oauth() {
 	if err != nil {
 		log.Fatal("\n", err)
 	}
-
 	token := oauth1.NewToken(accessToken, accessSecret)
-	fmt.Println(fmt.Sprint(token))
 
-	httpClient := config.Client(oauth1.NoContext, token)
+	// Now that we have the token, create a new client that includes that access token so its requests are automatically processed
+	client := config.Client(oauth1.NoContext, token)
 
+	// Test application's access to account information & market data
 	path := "https://apisb.etrade.com/v1/market/quote/{AAPL}"
-	res, err := httpClient.Get(path)
+	res, err := client.Get(path)
 	if err != nil {
 		fmt.Println("\n", err)
 		os.Exit(1)
